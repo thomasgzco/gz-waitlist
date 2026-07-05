@@ -26,6 +26,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email and productId required' });
   }
 
+  // Check if already subscribed
   const { data: existing } = await supabase
     .from('subscribers')
     .select('email')
