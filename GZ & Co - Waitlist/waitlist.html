@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waitlist · GZ & Co</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui, sans-serif; }
+    body { background: #0b1120; color: #f1f5f9; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+    .card { background: #1e293b; padding: 2.5rem; border-radius: 24px; max-width: 500px; width: 100%; border: 1px solid #334155; }
+    h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .product-name { color: #facc15; }
+    .sub-text { color: #94a3b8; margin-bottom: 1.5rem; }
+    input { width: 100%; padding: 0.9rem; border-radius: 12px; border: 1px solid #334155; background: #0b1120; color: white; font-size: 1rem; margin-bottom: 0.8rem; }
+    button { width: 100%; padding: 0.9rem; background: #facc15; color: #0b1120; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    button:hover { background: #fde047; }
+    .referral-box { background: #0b1120; padding: 1rem; border-radius: 12px; margin-top: 1.5rem; word-break: break-all; font-size: 0.85rem; color: #94a3b8; display: none; }
+    .referral-box a { color: #facc15; text-decoration: underline; }
+    .error { color: #f87171; font-size: 0.9rem; margin-top: 0.5rem; }
+    .success { color: #4ade80; font-weight: 600; }
+    #loading { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🚀 Join the <span class="product-name" id="productDisplay">Waitlist</span></h2>
+    <p class="sub-text">Get early access + earn rewards by sharing your link.</p>
+
+    <form id="waitlistForm">
+      <input type="email" id="emailInput" placeholder="your@email.com" required />
+      <button type="submit" id="submitBtn">Get My Referral Link →</button>
+    </form>
+
+    <div id="loading">⏳ Submitting...</div>
+    <div id="result" class="referral-box"></div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get('product') || 'My Product';
+    document.getElementById('productDisplay').textContent = product;
+
+    const ref = params.get('ref');
+
+    const form = document.getElementById('waitlistForm');
+    const emailInput = document.getElementById('emailInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      submitBtn.disabled = true;
+      loading.style.display = 'block';
+      resultDiv.style.display = 'none';
+      resultDiv.innerHTML = '';
+
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, productId: product, referrer: ref || null })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const baseUrl = window.location.origin + window.location.pathname;
+          const referralLink = `${baseUrl}?product=${encodeURIComponent(product)}&ref=${data.referralCode}`;
+          resultDiv.innerHTML = `
+            <div class="success">✅ You're on the list!</div>
+            <p style="margin-top:0.8rem;">Share your unique link:</p>
+            <a href="${referralLink}" target="_blank">${referralLink}</a>
+          `;
+          resultDiv.style.display = 'block';
+          emailInput.value = '';
+        } else {
+          resultDiv.innerHTML = `<div class="error">❌ ${data.error || 'Something went wrong'}</div>`;
+          resultDiv.style.display = 'block';
+        }
+      } catch (err) {
+        resultDiv.innerHTML = `<div class="error">❌ Network error. Please try again.</div>`;
+        resultDiv.style.display = 'block';
+      }
+
+      submitBtn.disabled = false;
+      loading.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
