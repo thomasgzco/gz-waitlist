@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GZ & Co — Growth Without the Chaos</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #0b1120; color: #f1f5f9; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+    .container { max-width: 720px; text-align: center; }
+    .badge { background: #1e293b; color: #94a3b8; padding: 0.4rem 1.2rem; border-radius: 40px; font-size: 0.85rem; display: inline-block; margin-bottom: 2rem; border: 1px solid #334155; }
+    h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; background: linear-gradient(135deg, #facc15, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sub { font-size: 1.3rem; color: #94a3b8; margin-bottom: 2.5rem; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left; margin: 2rem 0; }
+    .feature { background: #1e293b; padding: 1.2rem; border-radius: 12px; border: 1px solid #334155; }
+    .feature strong { color: #facc15; }
+    .price { font-size: 2.8rem; font-weight: 700; color: #facc15; margin: 1.5rem 0 0.5rem; }
+    .price span { font-size: 1rem; font-weight: 400; color: #94a3b8; }
+    .btn { display: inline-block; background: #facc15; color: #0b1120; padding: 1rem 3rem; border-radius: 60px; font-weight: 700; font-size: 1.2rem; text-decoration: none; transition: 0.2s; margin: 1rem 0; }
+    .btn:hover { transform: scale(1.04); background: #fde047; }
+    .footnote { color: #64748b; font-size: 0.85rem; margin-top: 1.5rem; }
+    @media (max-width: 500px) { h1 { font-size: 2.2rem; } .feature-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">🇦🇺 Built in Australia · GZ & Co</div>
+    <h1>Growth without the chaos.</h1>
+    <p class="sub">Launch your product with a waitlist that builds hype, rewards referrers, and delivers a launch-day explosion.</p>
+
+    <div class="feature-grid">
+      <div class="feature"><strong>📧 Collect emails</strong> — one-click subscribe, no friction.</div>
+      <div class="feature"><strong>🔗 Referral links</strong> — every subscriber gets a unique shareable link.</div>
+      <div class="feature"><strong>📊 Live leaderboard</strong> — who brought the most? (coming week 2)</div>
+      <div class="feature"><strong>⚡ Instant setup</strong> — your page goes live in 24 hours.</div>
+    </div>
+
+    <div class="price">$19 <span>/ month</span></div>
+    <a href="#" class="btn" id="buyBtn">Start Your Waitlist →</a>
+    <p class="footnote">No contract · Cancel anytime · Includes setup & support</p>
+  </div>
+
+  <script>
+    // We will update this Stripe link in the next step
+    document.getElementById('buyBtn').href = 'https://buy.stripe.com/your-test-link-here';
+  </script>
+</body>
+</html>
